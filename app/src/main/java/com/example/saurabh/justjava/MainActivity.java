@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
         EditText name = (EditText) findViewById(R.id.Name);
 
-        String total = calculatePrice(quantity, WCreamFlag, ChFlag);
+        String total = calculatePrice(WCreamFlag, ChFlag);
         String summary = createOrderSummary(name.getText().toString(),total, WCreamFlag, ChFlag);
-        display(quantity);
+        display();
         displaySummary(summary);
     }
 
@@ -60,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
      * This method returns the calculated Price.
      */
     @SuppressLint("NewApi")
-    public String calculatePrice(int quantity, boolean WCFlag, boolean ChFlag)
+    public String calculatePrice(boolean WCFlag, boolean ChFlag)
     {
         float total = 0.0f;
-        total += (WCFlag) ? 0.5 : 0;
-        total += (ChFlag) ? 0.5 : 0;
+        total += (WCFlag) ? (quantity*0.5) : 0;
+        total += (ChFlag) ? (quantity*0.5) : 0;
+        total += quantity*price;
         return NumberFormat.getCurrencyInstance().format(total);
     }
 
@@ -73,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the "+" button is clicked.
      */
     public void increment(View view) {
-        quantity += 1;
-        display(quantity);
-//        displayPrice(quantity);
+        quantity += (quantity==100) ? 0 : 1;
+        display();
     }
 
     /**
@@ -90,16 +90,15 @@ public class MainActivity extends AppCompatActivity {
         {
             quantity = 0;
         }
-        display(quantity);
-//        displayPrice(quantity * price);
+        display();
     }
 
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void display() {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + number);
+        quantityTextView.setText("" + quantity);
     }
 
     /**
@@ -111,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
         priceTextView.setText(Summary);
     }
 
-    /**
-     * This method displays the price after "+/-" is pressed
-     */
+//    /**
+//     * This method displays the price after "+/-" is pressed
+//     */
 //    private void displayPrice(int quantity)
 //    {
 //        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
