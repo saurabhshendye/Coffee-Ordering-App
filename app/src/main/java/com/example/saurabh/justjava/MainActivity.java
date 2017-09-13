@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public String createOrderSummary(int quantity, boolean wcFlag)
     {
-       return "Order Summary:" + "\n"
-               +"Quantity: " + quantity + "\n"
+       return "Quantity: " + quantity + "\n"
                + "Whipped Cream: " + wcFlag + "\n"
-               + "Total: " + calculatePrice(quantity);
+               + "Total: " + calculatePrice(quantity) + "\n"
+               + "Thank You!";
     }
 
     /**
