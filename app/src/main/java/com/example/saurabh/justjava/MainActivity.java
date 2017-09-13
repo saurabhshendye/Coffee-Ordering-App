@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -30,7 +31,14 @@ public class MainActivity extends AppCompatActivity {
     public void submitOrder(View view) {
         CheckBox whipdCream = (CheckBox) findViewById(R.id.Whipped_Cream);
         boolean WCreamFlag = whipdCream.isChecked();
-        String summary = createOrderSummary(quantity, WCreamFlag);
+
+        CheckBox chocolateCBox = (CheckBox) findViewById(R.id.Chocolate);
+        boolean ChFlag = chocolateCBox.isChecked();
+
+        EditText name = (EditText) findViewById(R.id.Name);
+
+        String total = calculatePrice(quantity, WCreamFlag, ChFlag);
+        String summary = createOrderSummary(name.getText().toString(),total, WCreamFlag, ChFlag);
         display(quantity);
         displaySummary(summary);
     }
@@ -38,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is to build order summary to be displayed
      */
-    public String createOrderSummary(int quantity, boolean wcFlag)
+    public String createOrderSummary(String Name, String total, boolean wcFlag, boolean chFlag)
     {
-       return "Quantity: " + quantity + "\n"
+       return "Name: " + Name +"\n"
+               + "Quantity: " + quantity + "\n"
                + "Whipped Cream: " + wcFlag + "\n"
-               + "Total: " + calculatePrice(quantity) + "\n"
+               + "Chocolate: " + chFlag +"\n"
+               + "Total: " + total + "\n"
                + "Thank You!";
     }
 
@@ -50,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
      * This method returns the calculated Price.
      */
     @SuppressLint("NewApi")
-    public String calculatePrice(int quantity)
+    public String calculatePrice(int quantity, boolean WCFlag, boolean ChFlag)
     {
-        return NumberFormat.getCurrencyInstance().format(quantity*3);
+        float total = 0.0f;
+        total += (WCFlag) ? 0.5 : 0;
+        total += (ChFlag) ? 0.5 : 0;
+        return NumberFormat.getCurrencyInstance().format(total);
     }
 
 
@@ -62,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public void increment(View view) {
         quantity += 1;
         display(quantity);
-        displayPrice(quantity);
+//        displayPrice(quantity);
     }
 
     /**
@@ -78,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             quantity = 0;
         }
         display(quantity);
-        displayPrice(quantity * price);
+//        displayPrice(quantity * price);
     }
 
     /**
@@ -101,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method displays the price after "+/-" is pressed
      */
-    private void displayPrice(int quantity)
-    {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(calculatePrice(quantity));
-    }
+//    private void displayPrice(int quantity)
+//    {
+//        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
+//        priceTextView.setText(calculatePrice(quantity));
+//    }
 }
