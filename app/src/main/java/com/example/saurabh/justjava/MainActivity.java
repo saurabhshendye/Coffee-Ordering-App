@@ -1,7 +1,9 @@
 package com.example.saurabh.justjava;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.icu.text.NumberFormat;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -39,8 +41,19 @@ public class MainActivity extends AppCompatActivity {
 
         String total = calculatePrice(WCreamFlag, ChFlag);
         String summary = createOrderSummary(name.getText().toString(),total, WCreamFlag, ChFlag);
-        display();
-        displaySummary(summary);
+//        display();
+//        displaySummary(summary);
+
+        String[] email = {"saurabh.shendye@gmail.com"};
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_EMAIL, email);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Order Details");
+        intent.putExtra(Intent.EXTRA_TEXT, summary);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, "Chooser Title"));
+        }
+
     }
 
     /**
@@ -68,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         total += quantity*price;
         return NumberFormat.getCurrencyInstance().format(total);
     }
-
 
     /**
      * This method is called when the "+" button is clicked.
